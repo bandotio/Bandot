@@ -9,6 +9,12 @@ Unsecured lending is a new DeFi attempt that uses a credit guarantee mechanism t
 
 Bandot tried cross-chain credit mortgage in Polkadot, that is, the credit accumulated on other parallel chains of Polkadot can also be seamlessly used as a mortgage certificate on Bandot, so that users can obtain high returns through a combination of multiple types of assets.
 
+The Guru is an asset cross-chain bridge gateway launched by the Bandot team. It serves as a bridge connecting the multi-currency asset market and the Polkadot DeFi market, allowing users with different assets to participate in the upcoming Polkadot DeFi market more conveniently and seamlessly . Since Guru was officially launched on December 21, the development has progressed smoothly, and the mortgage platform on the PC and mobile phones has been opened.
+
+## milestone
+
+2020.12 Release Guru cross-chain gateway
+2021.1 Testnet Pandora goes online
 
 Twitter:https://twitter.com/hellobandot  
 Telegram:t.me/hellobandot  
