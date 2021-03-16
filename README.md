@@ -13,7 +13,7 @@ The Guru is an asset cross-chain bridge gateway launched by the Bandot team. It 
 
 ## milestone
 
-2020.12 Release Guru cross-chain gateway
+2020.12 Release Guru cross-chain gateway  
 2021.1 Testnet Pandora goes online
 
 Twitter:https://twitter.com/hellobandot  
