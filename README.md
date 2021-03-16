@@ -10,6 +10,6 @@ Unsecured lending is a new DeFi attempt that uses a credit guarantee mechanism t
 Bandot tried cross-chain credit mortgage in Polkadot, that is, the credit accumulated on other parallel chains of Polkadot can also be seamlessly used as a mortgage certificate on Bandot, so that users can obtain high returns through a combination of multiple types of assets.
 
 
-Twitter:https://twitter.com/hellobandot
-Telegram:t.me/hellobandot
-Medium:https://hellobandot.medium.com
+Twitter:https://twitter.com/hellobandot  
+Telegram:t.me/hellobandot  
+Medium:https://hellobandot.medium.com  
