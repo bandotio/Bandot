@@ -73,19 +73,16 @@ impl<T: Trait> PairPool<T> {
         sender: T::AccountId,
     ) -> Self {
         let mut shares_map = BTreeMap::new();
-        shares_map.insert(
-            sender.clone(),
-            T::InitialShares::get().saturating_mul(DOLLARS),
-        );
+        shares_map.insert(sender.clone(), T::InitialShares::get());
         Self {
             fee_rate: T::ExchangeFeeRate::get(),
             token_a_pool: token_a_amount,
             token_b_pool: token_b_amount,
-            invariant: token_a_amount
+            invariant: (token_a_amount
                 .checked_div(DOLLARS)
                 .unwrap()
-                .saturating_mul(token_b_amount),
-            total_shares: T::InitialShares::get().saturating_mul(DOLLARS),
+                .saturating_mul(token_b_amount)),
+            total_shares: T::InitialShares::get(),
             shares: shares_map,
         }
     }
@@ -96,23 +93,16 @@ impl<T: Trait> PairPool<T> {
         _token_b_pool: Balance,
         token_a_amount: Balance,
     ) -> (Balance, Balance, Balance) {
+        let fee = token_a_amount
+            .saturating_mul(self.fee_rate.0.checked_div(self.fee_rate.1).unwrap().into());
         let new_token_a_pool: Balance = _token_a_pool.saturating_add(token_a_amount);
-        let temp_token_a_pool: Balance = (_token_a_pool.saturating_mul(self.fee_rate.1.into()))
-            .saturating_add(
-                token_a_amount
-                    .saturating_mul(self.fee_rate.1.saturating_sub(self.fee_rate.0).into()),
-            );
+        let temp_token_a_pool: Balance = new_token_a_pool.saturating_sub(fee);
         let new_token_b_pool: Balance = self
             .invariant
-            .saturating_mul(self.fee_rate.1.into())
             .checked_div(temp_token_a_pool)
             .unwrap()
             .into();
-        let tokens_out_b: Balance = _token_b_pool
-            .checked_div(DOLLARS)
-            .unwrap()
-            .saturating_sub(new_token_b_pool);
-        let ab: Balance = _token_b_pool.checked_div(DOLLARS).unwrap();
+        let tokens_out_b: Balance = _token_b_pool.saturating_sub(new_token_b_pool);
         (new_token_a_pool, new_token_b_pool, tokens_out_b)
     }
     pub fn calculate_b_to_a(
@@ -121,22 +111,16 @@ impl<T: Trait> PairPool<T> {
         _token_b_pool: Balance,
         token_b_amount: Balance,
     ) -> (Balance, Balance, Balance) {
+        let fee = token_b_amount
+            .saturating_mul(self.fee_rate.0.checked_div(self.fee_rate.1).unwrap().into());
         let new_token_b_pool: Balance = _token_b_pool.saturating_add(token_b_amount);
-        let temp_token_b_pool: Balance = (_token_b_pool.saturating_mul(self.fee_rate.1.into()))
-            .saturating_add(
-                token_b_amount
-                    .saturating_mul(self.fee_rate.1.saturating_sub(self.fee_rate.0).into()),
-            );
+        let temp_token_b_pool: Balance = new_token_b_pool.saturating_sub(fee);
         let new_token_a_pool: Balance = self
             .invariant
-            .saturating_mul(self.fee_rate.1.into())
             .checked_div(temp_token_b_pool)
             .unwrap()
             .into();
-        let tokens_out_a: Balance = _token_a_pool
-            .checked_div(DOLLARS)
-            .unwrap()
-            .saturating_sub(new_token_a_pool);
+        let tokens_out_a: Balance = _token_a_pool.saturating_sub(new_token_a_pool);
         (new_token_a_pool, new_token_b_pool, tokens_out_a)
     }
 
@@ -169,25 +153,19 @@ impl<T: Trait> PairPool<T> {
         sender: T::AccountId,
     ) {
         let updated_shares = if let Some(prev_shares) = self.shares.get(&sender) {
-            prev_shares.saturating_add(shares)
+            *prev_shares + shares
         } else {
             shares
         };
         self.shares.insert(sender.clone(), updated_shares);
-        self.total_shares = self.total_shares.saturating_add(shares);
-        self.token_b_pool = self.token_b_pool.saturating_add(token_b_cost);
-        self.token_a_pool = self.token_a_pool.saturating_add(token_a_cost);
-        self.invariant = self.token_b_pool.saturating_mul(self.token_a_pool);
-        // let updated_shares = if let Some(prev_shares) = self.shares.get(&sender) {
-        //     *prev_shares + shares
-        // } else {
-        //     shares
-        // };
-        // self.shares.insert(sender.clone(), updated_shares);
-        // self.total_shares += shares;
-        // self.token_b_pool += token_b_cost;
-        // self.token_a_pool += token_a_cost;
-        // self.invariant = self.token_b_pool.saturating_mul(self.token_a_pool); //.checked_div(DOLLARS).unwrap()放s前面
+        self.total_shares += shares;
+        self.token_b_pool += token_b_cost;
+        self.token_a_pool += token_a_cost;
+        self.invariant = self
+            .token_b_pool
+            .checked_div(DOLLARS)
+            .unwrap()
+            .saturating_mul(self.token_a_pool);
     }
 
     pub fn devest(
@@ -198,28 +176,20 @@ impl<T: Trait> PairPool<T> {
         sender: T::AccountId,
     ) {
         if let Some(share) = self.shares.get_mut(&sender) {
-            *share = share.saturating_sub(shares_burned);
+            *share -= shares_burned;
         }
-        self.total_shares = self.total_shares.saturating_sub(shares_burned);
-        self.token_b_pool = self.token_b_pool.saturating_sub(token_b_cost);
-        self.token_a_pool = self.token_a_pool.saturating_sub(token_a_cost);
+        self.total_shares -= shares_burned;
+        self.token_b_pool -= token_b_cost;
+        self.token_a_pool -= token_a_cost;
         if self.total_shares == Zero::zero() {
             self.invariant = Zero::zero();
         } else {
-            self.invariant = self.token_a_pool.saturating_mul(self.token_b_pool);
+            self.invariant = self
+                .token_a_pool
+                .checked_div(DOLLARS)
+                .unwrap()
+                .saturating_mul(self.token_b_pool);
         }
-        // if let Some(share) = self.shares.get_mut(&sender) {
-        //     *share -= shares_burned;
-        // }
-        // self.total_shares -= shares_burned;
-        // self.token_b_pool -= token_b_cost;
-        // self.token_a_pool -= token_a_cost;
-        // if self.total_shares == Zero::zero() {
-        //     self.invariant = Zero::zero();
-        // } else {
-        //     self.invariant = self.token_a_pool.saturating_mul(self.token_b_pool);
-        //     //.checked_div(DOLLARS).unwrap()放s前面
-        // }
     }
 
     pub fn ensure_burned_shares(
@@ -272,7 +242,6 @@ decl_error! {
         InsufficientShares,
         DoesNotOwnShare,
         LowAmountOut,
-        Overflow,
     }
 }
 
