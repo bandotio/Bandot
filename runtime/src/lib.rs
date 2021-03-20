@@ -4,7 +4,7 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use lazy_static::lazy_static;
+//use lazy_static::lazy_static;
 use pallet_grandpa::fg_primitives;
 use pallet_grandpa::{AuthorityId as GrandpaId, AuthorityList as GrandpaAuthorityList};
 use sp_api::impl_runtime_apis;
@@ -16,7 +16,7 @@ use sp_runtime::traits::{
 use sp_runtime::{
     create_runtime_str, generic, impl_opaque_keys,
     transaction_validity::{TransactionSource, TransactionValidity},
-    ApplyExtrinsicResult, MultiSignature,
+    ApplyExtrinsicResult, ModuleId, MultiSignature,
 };
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -243,16 +243,17 @@ impl pallet_sudo::Trait for Runtime {
     type Call = Call;
 }
 
-lazy_static! {
-    static ref EX_ACCOUNT_ID: AccountId = AccountId::default();
-}
-pub struct ExchangeAccountId;
-impl Get<AccountId> for ExchangeAccountId {
-    fn get() -> AccountId {
-        EX_ACCOUNT_ID.clone()
-    }
-}
+// lazy_static! {
+//     static ref EX_ACCOUNT_ID: AccountId = AccountId::default();
+// }
+// pub struct ExchangeAccountId;
+// impl Get<AccountId> for ExchangeAccountId {
+//     fn get() -> AccountId {
+//         EX_ACCOUNT_ID.clone()
+//     }
+// }
 parameter_types! {
+    pub const ExchangeAccountId: ModuleId = ModuleId(*b"bandotex");
     pub const InitialShares: Balance = 100;
     pub const ExchangeFeeRate: (u32, u32) = (3, 1000);
     pub AllowedExchangePairs:Vec<TokenPair> = vec![
