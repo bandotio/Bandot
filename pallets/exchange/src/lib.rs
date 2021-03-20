@@ -7,7 +7,7 @@ use frame_support::{
 use frame_system::ensure_signed;
 use orml_traits::{MultiCurrency, MultiCurrencyExtended};
 use orml_utilities::with_transaction_result;
-use primitives::{Balance, TokenPair, TokenSymbol, DOLLARS};
+use primitives::{Balance, TokenPair, TokenSymbol};
 use sp_runtime::{
     traits::{AccountIdConversion, Zero},
     ModuleId, RuntimeDebug,
@@ -78,17 +78,16 @@ impl<T: Trait> PairPool<T> {
         let mut shares_map = BTreeMap::new();
         shares_map.insert(
             sender.clone(),
-            T::InitialShares::get().saturating_mul(DOLLARS),
+            T::InitialShares::get(),
         );
         Self {
             fee_rate: T::ExchangeFeeRate::get(),
             token_a_pool: token_a_amount,
             token_b_pool: token_b_amount,
             invariant: token_a_amount
-                .checked_div(DOLLARS)
                 .unwrap()
                 .saturating_mul(token_b_amount),
-            total_shares: T::InitialShares::get().saturating_mul(DOLLARS),
+            total_shares: T::InitialShares::get(),
             shares: shares_map,
         }
     }
