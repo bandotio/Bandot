@@ -15,8 +15,13 @@ use sp_runtime::{
 use sp_std::collections::btree_map::BTreeMap;
 use sp_std::prelude::*;
 
+mod mock;
+mod tests;
+
 #[cfg(feature = "std")]
 pub use serde::{Deserialize, Serialize};
+
+pub const INITIAL_SHARE: Balance = 100;
 
 pub trait Trait: frame_system::Trait {
     type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
@@ -25,7 +30,7 @@ pub trait Trait: frame_system::Trait {
         Balance = Balance,
         CurrencyId = TokenSymbol,
     >;
-    type InitialShares: Get<Balance>;
+    //type InitialShares: Get<Balance>;
     type ExchangeFeeRate: Get<(u32, u32)>;
     type ExchangeAccountId: Get<ModuleId>; //type ExchangeAccountId: Get<Self::AccountId>;
     type AllowedExchangePairs: Get<Vec<TokenPair>>;
@@ -78,16 +83,14 @@ impl<T: Trait> PairPool<T> {
         let mut shares_map = BTreeMap::new();
         shares_map.insert(
             sender.clone(),
-            T::InitialShares::get(),
+            INITIAL_SHARE, //T::InitialShares::get().saturating_mul(DOLLARS),
         );
         Self {
             fee_rate: T::ExchangeFeeRate::get(),
             token_a_pool: token_a_amount,
             token_b_pool: token_b_amount,
-            invariant: token_a_amount
-                .unwrap()
-                .saturating_mul(token_b_amount),
-            total_shares: T::InitialShares::get(),
+            invariant: token_a_amount.saturating_mul(token_b_amount), // 放s前面.checked_div(DOLLARS).unwrap()
+            total_shares: INITIAL_SHARE, //T::InitialShares::get().saturating_mul(DOLLARS)
             shares: shares_map,
         }
     }
@@ -292,7 +295,7 @@ decl_module! {
 
                 let pool = PairPool::<T>::initialize_new(_token_a_amount, _token_b_amount, sender.clone());
                 PairStructs::<T>::insert(_pair, pool);
-                Self::deposit_event(RawEvent::Initialized(sender, token_a, token_b, T::InitialShares::get()));
+                Self::deposit_event(RawEvent::Initialized(sender, token_a, token_b, INITIAL_SHARE));
                 Ok(())
             })?;
             Ok(())
@@ -449,4 +452,3 @@ impl<T: Trait> Module<T> {
         Ok(())
     }
 }
-

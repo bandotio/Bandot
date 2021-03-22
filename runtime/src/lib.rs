@@ -254,7 +254,7 @@ impl pallet_sudo::Trait for Runtime {
 // }
 parameter_types! {
     pub const ExchangeAccountId: ModuleId = ModuleId(*b"bandotex");
-    pub const InitialShares: Balance = 100;
+    //pub const InitialShares: Balance = 100;
     pub const ExchangeFeeRate: (u32, u32) = (3, 1000);
     pub AllowedExchangePairs:Vec<TokenPair> = vec![
         TokenPair::new(TokenSymbol::BDT, TokenSymbol::BUSD),
@@ -264,7 +264,7 @@ parameter_types! {
 impl pallet_exchange::Trait for Runtime {
     type Event = Event;
     type Currency = Currencies;
-    type InitialShares = InitialShares;
+    //type InitialShares = InitialShares;
     type ExchangeFeeRate = ExchangeFeeRate;
     type ExchangeAccountId = ExchangeAccountId;
     type AllowedExchangePairs = AllowedExchangePairs;
