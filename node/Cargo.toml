@@ -50,7 +50,7 @@ sp-inherents = {version = '3.0.0', git = 'https://github.com/paritytech/substrat
 sp-runtime = {version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 sp-transaction-pool = {version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 substrate-frame-rpc-system = {version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
-
+sp-keystore = {version = '0.9.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 # local dependencies
 node-template-runtime = {version = '3.0.0', path = '../runtime'}
 

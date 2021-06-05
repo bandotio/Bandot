@@ -17,6 +17,7 @@ substrate-wasm-builder={version = '4.0.0', git = 'https://github.com/paritytech/
 # external dependencies
 codec = {default-features = false, features = ['derive'], package = 'parity-scale-codec', version = '2.0.0'}
 hex-literal= {optional = true, version = '0.3.1'}
+log = { version = "0.4.14", default-features = false }
 
 # Substrate dependencies
 frame-benchmarking = {default-features = false, optional = true, version = '3.1.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
@@ -47,6 +48,7 @@ sp-version = {default-features = false, version = '3.0.0', git = 'https://github
 
 # local dependencies
 pallet-template = {default-features = false, version = '3.0.0', path = '../pallets/template'}
+pallet-priceocw ={default-features = false, version = '0.0.1', path = '../pallets/priceocw'}
 
 [features]
 default = ['std']
@@ -76,6 +78,7 @@ std = [
 	'pallet-timestamp/std',
 	'pallet-transaction-payment-rpc-runtime-api/std',
 	'pallet-transaction-payment/std',
+	'pallet-priceocw/std',
 	'sp-api/std',
 	'sp-block-builder/std',
 	'sp-consensus-aura/std',
@@ -87,4 +90,5 @@ std = [
 	'sp-std/std',
 	'sp-transaction-pool/std',
 	'sp-version/std',
+	"log/std",
 ]

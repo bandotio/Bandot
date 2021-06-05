@@ -162,6 +162,13 @@ pub fn new_full(mut config: Configuration) -> Result<TaskManager, ServiceError> 
 			block_announce_validator_builder: None,
 		})?;
 
+	let keystore = keystore_container.sync_keystore();
+	sp_keystore::SyncCryptoStore::sr25519_generate_new(
+		&*keystore,
+		sp_core::crypto::KeyTypeId(*b"dot!"),
+		Some("//Alice"),
+	).expect("Creating key with account Alice should succeed.");
+	
 	if config.offchain_worker.enabled {
 		sc_service::build_offchain_workers(
 			&config, task_manager.spawn_handle(), client.clone(), network.clone(),
@@ -390,3 +397,5 @@ pub fn new_light(mut config: Configuration) -> Result<TaskManager, ServiceError>
 
 	Ok(task_manager)
 }
+
+
