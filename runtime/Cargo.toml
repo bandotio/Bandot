@@ -46,6 +46,10 @@ sp-std = {default-features = false, version = '3.0.0', git = 'https://github.com
 sp-transaction-pool = {default-features = false, version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 sp-version = {default-features = false, version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 
+pallet-contracts = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
+pallet-contracts-primitives = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05' }
+pallet-contracts-rpc-runtime-api = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
+
 # local dependencies
 pallet-template = {default-features = false, version = '3.0.0', path = '../pallets/template'}
 pallet-priceocw ={default-features = false, version = '0.0.1', path = '../pallets/priceocw'}
@@ -91,4 +95,7 @@ std = [
 	'sp-transaction-pool/std',
 	'sp-version/std',
 	"log/std",
+	'pallet-contracts/std',
+    'pallet-contracts-primitives/std',
+	'pallet-contracts-rpc-runtime-api/std',
 ]
