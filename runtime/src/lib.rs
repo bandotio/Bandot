@@ -44,6 +44,9 @@ use pallet_transaction_payment::CurrencyAdapter;
 use pallet_priceocw::crypto::TestAuthId as PriceOcwId;
 use pallet_contracts::weights::WeightInfo;
 
+mod chain_extension;
+use crate::chain_extension::FetchPriceExtension;
+
 
 /// Import the template pallet.
 pub use pallet_template;
@@ -408,7 +411,7 @@ impl pallet_contracts::Config for Runtime {
 	type MaxValueSize = MaxValueSize;
 	type WeightPrice = pallet_transaction_payment::Module<Self>;
 	type WeightInfo = pallet_contracts::weights::SubstrateWeight<Self>;
-	type ChainExtension = ();
+	type ChainExtension = FetchPriceExtension;
 	type DeletionQueueDepth = DeletionQueueDepth;
 	type DeletionWeightLimit = DeletionWeightLimit;
 	type MaxCodeSize = MaxCodeSize;
