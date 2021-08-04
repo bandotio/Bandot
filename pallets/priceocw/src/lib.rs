@@ -328,6 +328,8 @@ impl<T: Config> Pallet<T> {
 		let request = http::Request::get(
 			"https://min-api.cryptocompare.com/data/price?fsym=DOT&tsyms=USD"
 		);
+
+		
 		// We set the deadline for sending of the request, note that awaiting response can
 		// have a separate deadline. Next we send the request, before that it's also possible
 		// to alter request headers or stream body content in case of non-GET requests.
