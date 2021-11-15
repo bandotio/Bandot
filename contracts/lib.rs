@@ -40,7 +40,7 @@ impl Environment for CustomEnvironment {
     type Hash = <ink_env::DefaultEnvironment as Environment>::Hash;
     type BlockNumber = <ink_env::DefaultEnvironment as Environment>::BlockNumber;
     type Timestamp = <ink_env::DefaultEnvironment as Environment>::Timestamp;
-    
+    type RentFraction = <ink_env::DefaultEnvironment as Environment>::RentFraction;
 
     type ChainExtension = FetchPrice;
 }
@@ -97,7 +97,7 @@ mod pricetest {
 
         /// Simply returns the current value of our `bool`.
         #[ink(message)]
-        pub fn get(&self) -> (u32,u32,u32) {
+        pub fn get(&self) -> u32 {
             u32::from_le_bytes(self.value)
             
         }

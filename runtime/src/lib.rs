@@ -233,6 +233,12 @@ impl pallet_grandpa::Config for Runtime {
 	type WeightInfo = ();
 }
 
+impl pallet_utility::Config for Runtime {
+	type Event = Event;
+	type Call = Call;
+	type WeightInfo = pallet_utility::weights::SubstrateWeight<Runtime>;
+}
+
 parameter_types! {
 	pub const MinimumPeriod: u64 = SLOT_DURATION / 2;
 }
@@ -438,6 +444,7 @@ construct_runtime!(
 		PriceOcw: pallet_priceocw::{Pallet, Call, Storage, Event<T>, ValidateUnsigned},
 		//Include contract_pallet in runtime
 		Contracts: pallet_contracts::{Pallet, Call,Config<T>,Storage, Event<T>},
+		Utility: pallet_utility::{Pallet, Call, Event},
 
 	}
 );

@@ -45,7 +45,7 @@ sp-session = {default-features = false, version = '3.0.0', git = 'https://github
 sp-std = {default-features = false, version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 sp-transaction-pool = {default-features = false, version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 sp-version = {default-features = false, version = '3.0.0', git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
-
+pallet-utility = { version = "3.0.0", default-features = false, git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05' }
 pallet-contracts = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
 pallet-contracts-primitives = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05' }
 pallet-contracts-rpc-runtime-api = { default-features = false, version = '3.0.0',git = 'https://github.com/paritytech/substrate.git', tag = 'monthly-2021-05'}
@@ -80,6 +80,7 @@ std = [
 	'pallet-sudo/std',
 	'pallet-template/std',
 	'pallet-timestamp/std',
+	"pallet-utility/std",
 	'pallet-transaction-payment-rpc-runtime-api/std',
 	'pallet-transaction-payment/std',
 	'pallet-priceocw/std',
